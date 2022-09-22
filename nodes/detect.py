@@ -50,8 +50,8 @@ class Yolov5Detector:
         self.line_thickness = 3
         self.view_image = False
 
-        self.inference_size_w = 640
-        self.inference_size_h = 480
+        self.inference_size_w = 1280
+        self.inference_size_h = 720
         # Initialize weights 
         rospack = rospkg.RosPack()
         box_path = rospack.get_path('box_code')
