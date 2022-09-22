@@ -65,6 +65,8 @@ class Yolov5Detector:
         self.output_image_topic = None
         self.on_off_service_name = None
 
+        self.image_sub = None
+
 
     def init_model(self):
         # Initialize model
@@ -129,8 +131,9 @@ class Yolov5Detector:
                 )
             msg += "on"
         else:
-            self.image_sub.unregister()
-            self.image_sub = None
+            if self.image_sub is not None:
+                self.image_sub.unregister()
+                self.image_sub = None
             msg += "off"
 
         return SetBoolResponse(True, msg)
