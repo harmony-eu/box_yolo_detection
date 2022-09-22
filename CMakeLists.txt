@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(box_code)
+project(box_yolo_detection)
 
 find_package(catkin REQUIRED COMPONENTS
   rospy

@@ -54,7 +54,7 @@ class Yolov5Detector:
         self.inference_size_h = 720
         # Initialize weights 
         rospack = rospkg.RosPack()
-        box_path = rospack.get_path('box_code')
+        box_path = rospack.get_path('box_yolo_detection')
 
         self.weights = os.path.join(box_path, weights)
         self.data = os.path.join(box_path, data_yaml)
@@ -100,7 +100,7 @@ class Yolov5Detector:
         input_image_type, input_image_topic, _ = get_topic_type(self.input_image_topic, blocking = True)
         self.compressed_input = input_image_type == "sensor_msgs/CompressedImage"
 
-        self.on_off_service = rospy.Service(self.on_off_service_name, SetBool, self.on_of_callback)
+        self.on_off_service = rospy.Service(self.on_off_service_name, SetBool, self.on_off_callback)
 
         # Initialize prediction publisher
         self.pred_pub = rospy.Publisher(
@@ -118,7 +118,7 @@ class Yolov5Detector:
         self.bridge = CvBridge()
 
 
-    def on_of_callback(self, req):
+    def on_off_callback(self, req):
         msg = "yolo turned "
         if req.data is True:
             if self.compressed_input:
@@ -226,7 +226,7 @@ class Yolov5Detector:
 
 
 if __name__ == "__main__":
-    node_name = 'box_detector'
+    node_name = 'box_yolo_detection'
 
     check_requirements(exclude=("tensorboard", "thop"))
     
