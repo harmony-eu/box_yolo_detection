@@ -135,6 +135,7 @@ class Yolov5Detector:
                 self.image_sub.unregister()
                 self.image_sub = None
             msg += "off"
+        print(msg)
 
         return SetBoolResponse(True, msg)
 
