@@ -66,11 +66,12 @@ class Yolov5Detector:
         self.on_off_service_name = None
 
         self.image_sub = None
+        self.selected_device = 0 # or 'cpu'
 
 
-    def init_model(self):
+    def init_torch(self):
         # Initialize model
-        self.device = select_device(str(0))
+        self.device = select_device(str(self.selected_device))
         self.model = DetectMultiBackend(self.weights, device=self.device, dnn=True, data=self.data)
         self.stride, self.names, self.pt, self.jit, self.onnx, self.engine = (
             self.model.stride,
@@ -94,8 +95,11 @@ class Yolov5Detector:
             self.model.model.half() if self.half else self.model.model.float()
         bs = 1  # batch_size
         cudnn.benchmark = True  # set True to speed up constant image size inference
-        self.model.warmup()  # warmup        
-        
+        self.model.warmup()  # warmup
+
+
+    def intialize(self):
+        self.init_torch()
         # Initialize subscriber to Image/CompressedImage topic
         input_image_type, input_image_topic, _ = get_topic_type(self.input_image_topic, blocking = True)
         self.compressed_input = input_image_type == "sensor_msgs/CompressedImage"
@@ -138,7 +142,6 @@ class Yolov5Detector:
         print(msg)
 
         return SetBoolResponse(True, msg)
-
 
 
     def input_image_callback(self, data):
@@ -232,7 +235,7 @@ if __name__ == "__main__":
     check_requirements(exclude=("tensorboard", "thop"))
     
     rospy.init_node(node_name, anonymous=False)
-    detector = Yolov5Detector(weights='models/best.pt', data_yaml='models/model.yaml')
+    detector = Yolov5Detector(weights='models/grey_box.pt', data_yaml='models/model.yaml')
     # set communication options
     detector.input_image_topic = '/kinect/rgb/image_raw'
     detector.output_topic = node_name + '/detections'
@@ -241,6 +244,6 @@ if __name__ == "__main__":
     detector.on_off_service_name = node_name + '/set_on_state'
 
     # start computation
-    detector.init_model()
-    
+    detector.selected_device = 'cpu' # or 0 for cuda
+    detector.intialize()
     rospy.spin()
