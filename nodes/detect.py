@@ -1,5 +1,6 @@
 # !/usr/bin/env python3
 
+import argparse
 import cv2
 import numpy as np
 import os
@@ -238,10 +239,22 @@ class Yolov5Detector:
 if __name__ == "__main__":
     node_name = 'box_yolo_detection'
 
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--model_type',
+                        choices=[
+                            model_name.name.rsplit(".pt", maxsplit=1)[0]
+                            for model_name in sorted((FILE.parents[1] /
+                                                      "models").rglob("*.pt"))
+                        ],
+                        required=True,
+                        help="Type of model to load.")
+    args = parser.parse_args()
+
     check_requirements(exclude=("tensorboard", "thop"))
 
     rospy.init_node(node_name, anonymous=False)
-    detector = Yolov5Detector(weights='models/grey_box.pt',
+    detector = Yolov5Detector(weights=f'models/{args.model_type}.pt',
                               data_yaml='models/model.yaml')
     # set communication options
     detector.input_image_topic = '/kinect/rgb/image_raw'
