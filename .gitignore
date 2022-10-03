@@ -110,7 +110,6 @@ ENV/
 env.bak/
 venv.bak/
 box_venv
-models
 
 # Spyder project settings
 .spyderproject
