@@ -30,4 +30,3 @@ The nodes in this repo are run in a python3 virtual environment. As roslaunch in
     git clone https://github.com/mats-robotics/detection_msgs.git;
     catkin build
     ```
-- This repo also depends on the [yolov5](https://github.com/ultralytics/yolov5.git) submodule, at commit `23701eac7a7b160e478ba4bbef966d0af9348251`, which is cloned automatically if following the instructions above.
