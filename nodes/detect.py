@@ -257,7 +257,7 @@ if __name__ == "__main__":
     detector = Yolov5Detector(weights=f'models/{args.model_type}.pt',
                               data_yaml='models/model.yaml')
     # set communication options
-    detector.input_image_topic = '/kinect/rgb/image_raw'
+    detector.input_image_topic = '/kinect_subordinate/rgb/image_raw'
     detector.output_topic = node_name + '/detections'
     detector.publish_image = True
     detector.output_image_topic = node_name + '/image_output'
