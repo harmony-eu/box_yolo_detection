@@ -1,0 +1,30 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/amend_woskspaces/calibration_ws/install/detection_msgs/include/**",
+        "/home/amend_woskspaces/calibration_ws/install/image_meta_msgs_ros2/include/**",
+        "/home/amend_woskspaces/calibration_ws/install/flir_spinnaker_common/include/**",
+        "/home/amend_woskspaces/calibration_ws/install/camera_control_msgs_ros2/include/**",
+        "/home/amend_woskspaces/tracking_ws/install/obstacle_detector/include/**",
+        "/home/amend_woskspaces/tracking_ws/install/nav2_dynamic_msgs/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/amend_woskspaces/calibration_ws/src/Azure_Kinect_ROS_Driver/include/**",
+        "/home/amend_woskspaces/calibration_ws/src/flir_camera_driver/include/**",
+        "/home/amend_woskspaces/calibration_ws/src/flir_spinnaker_common/include/**",
+        "/home/amend_woskspaces/calibration_ws/src/tutorial_interfaces/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

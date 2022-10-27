@@ -1,0 +1,28 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/amend_woskspaces/calibration_ws/install/detection_msgs/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/calibration_ws/install/image_meta_msgs_ros2/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/calibration_ws/install/camera_control_msgs_ros2/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/tracking_ws/install/obstacle_detector/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/tracking_ws/install/kf_hungarian_tracker/lib/python3.10/site-packages",
+        "/home/amend_woskspaces/tracking_ws/install/detection_2d_lidar/lib/python3.10/site-packages",
+        "/home/amend_woskspaces/tracking_ws/install/nav2_dynamic_msgs/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/tracking_ws/install/moving_object_tracking/lib/python3.10/site-packages",
+        "/home/amend_woskspaces/tracking_ws/install/laser_static_map_filter/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/amend_woskspaces/calibration_ws/install/detection_msgs/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/calibration_ws/install/image_meta_msgs_ros2/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/calibration_ws/install/camera_control_msgs_ros2/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/tracking_ws/install/obstacle_detector/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/tracking_ws/install/kf_hungarian_tracker/lib/python3.10/site-packages",
+        "/home/amend_woskspaces/tracking_ws/install/detection_2d_lidar/lib/python3.10/site-packages",
+        "/home/amend_woskspaces/tracking_ws/install/nav2_dynamic_msgs/local/lib/python3.10/dist-packages",
+        "/home/amend_woskspaces/tracking_ws/install/moving_object_tracking/lib/python3.10/site-packages",
+        "/home/amend_woskspaces/tracking_ws/install/laser_static_map_filter/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

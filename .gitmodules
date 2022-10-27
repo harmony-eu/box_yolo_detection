@@ -1,4 +1,4 @@
 [submodule "nodes/yolov5"]
-	path = nodes/yolov5
+	path = box_yolo_detection/yolov5
 	url = https://github.com/ultralytics/yolov5
 	version = 23701eac7a7b160e478ba4bbef966d0af9348251

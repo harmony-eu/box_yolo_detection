@@ -10,14 +10,14 @@ import torch.backends.cudnn as cudnn
 
 from pathlib import Path
 
-import rospkg
-import rospy
+import rclpy
+
+from rclpy.node import Node
 
 from cv_bridge import CvBridge
-from rostopic import get_topic_type
 from detection_msgs.msg import BoundingBox, BoundingBoxes
 from sensor_msgs.msg import Image, CompressedImage
-from std_srvs.srv import SetBool, SetBoolResponse
+from std_srvs.srv import SetBool
 
 # add yolov5 submodule to path
 FILE = Path(__file__).resolve()
@@ -36,9 +36,10 @@ from utils.augmentations import letterbox
 
 
 @torch.no_grad()
-class Yolov5Detector:
+class Yolov5Detector(Node):
 
     def __init__(self, weights, data_yaml):
+        super().__init__('box_yolo_detection')
         self.conf_thres = 0.75
         self.iou_thres = 0.45
         self.agnostic_nms = True
@@ -50,8 +51,8 @@ class Yolov5Detector:
         self.inference_size_w = 1280
         self.inference_size_h = 720
         # Initialize weights
-        rospack = rospkg.RosPack()
-        box_path = rospack.get_path('box_yolo_detection')
+        this_file = Path(__file__).resolve()
+        box_path = this_file.parents[1]
 
         self.weights = os.path.join(box_path, weights)
         self.data = os.path.join(box_path, data_yaml)
@@ -99,50 +100,45 @@ class Yolov5Detector:
     def intialize(self):
         self.init_torch()
         # Initialize subscriber to Image/CompressedImage topic
-        input_image_type, input_image_topic, _ = get_topic_type(
-            self.input_image_topic, blocking=True)
-        self.compressed_input = (
-            input_image_type == "sensor_msgs/CompressedImage")
+        ti = self.get_publishers_info_by_topic(self.input_image_topic)[0]
+        self.compressed_input = bool(ti.topic_type == "sensor_msgs/CompressedImage")
 
-        self.on_off_service = rospy.Service(self.on_off_service_name, SetBool,
-                                            self.on_off_callback)
+        self.on_off_service = self.create_service(SetBool, self.on_off_service_name, self.on_off_callback)
 
         # Initialize prediction publisher
-        self.pred_pub = rospy.Publisher(self.output_topic,
-                                        BoundingBoxes,
-                                        queue_size=10)
+        self.pred_pub = self.create_publisher(BoundingBoxes, self.output_topic, 10)
 
         # Initialize image publisher
         if self.publish_image:
-            self.image_pub = rospy.Publisher(self.output_image_topic,
-                                             Image,
-                                             queue_size=10)
+            self.image_pub = self.create_publisher(Image, self.output_image_topic, 10)
 
         # Initialize CV_Bridge
         self.bridge = CvBridge()
 
-    def on_off_callback(self, req):
+    def on_off_callback(self, req: SetBool.Request, resp: SetBool.Response):
         msg = "yolo turned "
         if req.data is True:
             if self.compressed_input:
-                self.image_sub = rospy.Subscriber(self.input_image_topic,
-                                                  CompressedImage,
-                                                  self.input_image_callback,
-                                                  queue_size=1)
+                self.image_sub = self.create_subscription(CompressedImage,
+                                                          self.input_image_topic,
+                                                          self.input_image_callback,
+                                                          1)
             else:
-                self.image_sub = rospy.Subscriber(self.input_image_topic,
-                                                  Image,
-                                                  self.input_image_callback,
-                                                  queue_size=1)
+                self.image_sub = self.create_subscription(Image,
+                                                          self.input_image_topic,
+                                                          self.input_image_callback,
+                                                          1)
             msg += "on"
         else:
             if self.image_sub is not None:
-                self.image_sub.unregister()
+                self.image_sub.destroy()
                 self.image_sub = None
             msg += "off"
-        print(msg)
 
-        return SetBoolResponse(True, msg)
+        print(msg)
+        resp.success = True
+        resp.message = msg
+        return resp
 
     def input_image_callback(self, data):
         """adapted from yolov5/detect.py"""
@@ -191,8 +187,8 @@ class Yolov5Detector:
                 bounding_box = BoundingBox()
                 c = int(cls)
                 # Fill in bounding box message
-                bounding_box.Class = self.names[c]
-                bounding_box.probability = conf
+                bounding_box.object_class = self.names[c]
+                bounding_box.probability = float(conf)
                 bounding_box.xmin = int(xyxy[0])
                 bounding_box.ymin = int(xyxy[1])
                 bounding_box.xmax = int(xyxy[2])
@@ -236,7 +232,8 @@ class Yolov5Detector:
         return img, img0
 
 
-if __name__ == "__main__":
+def main(args=None):
+    rclpy.init(args=args)
     node_name = 'box_yolo_detection'
 
     parser = argparse.ArgumentParser()
@@ -252,12 +249,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     check_requirements(exclude=("tensorboard", "thop"))
-
-    rospy.init_node(node_name, anonymous=False)
     detector = Yolov5Detector(weights=f'models/{args.model_type}.pt',
                               data_yaml='models/model.yaml')
     # set communication options
-    detector.input_image_topic = '/kinect/rgb/image_raw'
+    detector.input_image_topic = '/camera/image_raw' #/camera/image_raw/compressed
     detector.output_topic = node_name + '/detections'
     detector.publish_image = True
     detector.output_image_topic = node_name + '/image_output'
@@ -266,4 +261,13 @@ if __name__ == "__main__":
     # start computation
     detector.selected_device = 'cpu'  # or 0 for cuda
     detector.intialize()
-    rospy.spin()
+    rclpy.spin(detector)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    detector.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
