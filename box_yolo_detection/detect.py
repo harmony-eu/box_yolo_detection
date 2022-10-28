@@ -9,6 +9,7 @@ import torch
 import torch.backends.cudnn as cudnn
 
 from pathlib import Path
+from time import sleep
 
 import rclpy
 
@@ -99,6 +100,9 @@ class Yolov5Detector(Node):
 
     def intialize(self):
         self.init_torch()
+        while len(self.get_publishers_info_by_topic(self.input_image_topic)) < 1:
+            self.get_logger().info('waiting for '+ str(self.input_image_topic) + " to be published...")
+            sleep(1.0)
         # Initialize subscriber to Image/CompressedImage topic
         ti = self.get_publishers_info_by_topic(self.input_image_topic)[0]
         self.compressed_input = bool(ti.topic_type == "sensor_msgs/CompressedImage")
@@ -252,7 +256,7 @@ def main(args=None):
     detector = Yolov5Detector(weights=f'models/{args.model_type}.pt',
                               data_yaml='models/model.yaml')
     # set communication options
-    detector.input_image_topic = '/camera/image_raw' #/camera/image_raw/compressed
+    detector.input_image_topic = '/kinect/rgb/image_raw' #/camera/image_raw/compressed
     detector.output_topic = node_name + '/detections'
     detector.publish_image = True
     detector.output_image_topic = node_name + '/image_output'
