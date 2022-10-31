@@ -1,3 +1,8 @@
+# Box YOLO detection (Ubuntu 22.04 - ROS Humble)
+**Description:** Detect grey or blue box using YOLO.
+
+**Container:** `base` container.
+
 ## Usage
 The nodes in this repo are run in a python3 virtual environment. As roslaunch interferes with this, the nodes are launched as python scripts
 
