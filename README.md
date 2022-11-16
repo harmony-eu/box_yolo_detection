@@ -35,3 +35,11 @@ The nodes in this repo are run in a python3 virtual environment. As roslaunch in
     git clone https://github.com/mats-robotics/detection_msgs.git;
     catkin build
     ```
+
+## Sources
+Repository: https://github.com/CaioRovetta15/yolov5_ros   
+Commit: 050c1bfe9091fbbc8af97dfb2eabeae2406fa625  
+Clone with submodules
+
+Repository: https://github.com/mats-robotics/detection_msgs    
+Commit: 6c251ef4eaf4d712722b72923c96a96f1cbea6e8
