@@ -2,10 +2,12 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>box_yolo_detection</name>
-  <version>0.0.0</version>
+  <version>0.0.1</version>
   <description>Yolo v5 ROS2 node</description>
   <maintainer email="harmony_asl@todo.todo">Giulio Schiavi</maintainer>
   <license>TODO: License declaration</license>
+  <author email="harmony_asl@todo.todo">Giulio Schiavi</author>
+  <author email="fabio.amadio@se.abb.com">Fabio Amadio</author>
 
   <exec_depend>rclpy</exec_depend>
   <exec_depend>ros2launch</exec_depend>
