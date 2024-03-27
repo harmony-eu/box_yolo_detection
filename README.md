@@ -26,7 +26,7 @@ The nodes in this repo are run in a python3 virtual environment. As roslaunch in
     git submodule update -i -r;
     pip3 install -r requirements.txt
     # Installs the required PyTorch dependencies (tested with the versions below).
-    pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu116
+    pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
     ```
 - Put your model files (`.pt` and `.yaml`) in the `models` folder.
 - To run the nodes in this repo, you will need to have built ROS messages of type `detection_msgs`. To do so, clone the [detection_msgs](https://github.com/mats-robotics/detection_msgs) repo in your `catkin` workspace and build it:
