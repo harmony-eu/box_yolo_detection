@@ -26,14 +26,15 @@ The nodes in this repo are run in a python3 virtual environment. As roslaunch in
     git submodule update -i -r;
     pip3 install -r requirements.txt
     # Installs the required PyTorch dependencies (tested with the versions below).
-    pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu116
+    pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 --extra-index-url https://download.pytorch.org/whl/cu116
     ```
 - Put your model files (`.pt` and `.yaml`) in the `models` folder.
-- To run the nodes in this repo, you will need to have built ROS messages of type `detection_msgs`. To do so, clone the [detection_msgs](https://github.com/mats-robotics/detection_msgs) repo in your `catkin` workspace and build it:
+- To run the nodes in this repo, you will need to have built ROS messages of type `detection_msgs`. To do so, clone the [box_yolo_detection_msgs](https://github.com/harmony-eu/box_yolo_detection_msg) repo in your workspace and build it:
     ```bash
     cd ${BOX_AMENT_WS}/src;
-    git clone https://github.com/mats-robotics/detection_msgs.git;
-    catkin build
+    git clone https://github.com/harmony-eu/box_yolo_detection_msg.git;
+    git checkout 1de1ff68cee5d4f52cfef39a42503af348cf4ad9;
+    colcon build
     ```
 
 ## Sources
@@ -41,5 +42,5 @@ Repository: https://github.com/CaioRovetta15/yolov5_ros
 Commit: 050c1bfe9091fbbc8af97dfb2eabeae2406fa625  
 Clone with submodules
 
-Repository: https://github.com/mats-robotics/detection_msgs    
-Commit: 6c251ef4eaf4d712722b72923c96a96f1cbea6e8
+Repository: https://github.com/harmony-eu/box_yolo_detection_msg
+Commit: 1de1ff68cee5d4f52cfef39a42503af348cf4ad9
